@@ -25,6 +25,8 @@ RUN apt-get update
 RUN apt-get install -y --force-yes sonar
 RUN rm -rf /opt/sonar/conf/sonar.properties
 ADD sonarqube/sonar.properties /opt/sonar/conf/sonar.properties
+#ADD sonarqube/create_database.sql /opt/sonar/create_database.sql
+#RUN mysql -u root -p < /opt/sonar/create_database.sql
 
 # Setup NGINX Reverse Proxy
 RUN apt-get install -y nginx
