@@ -28,6 +28,13 @@ RUN ln -s /etc/nginx/sites-available/reverse-proxy /etc/nginx/sites-enabled/reve
 # Append "daemon off;" to the beginning of the configuration
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 
+#Sonar
+RUN echo "deb http://downloads.sourceforge.net/project/sonar-pkg/deb binary/" > /etc/apt/sources.list.d/sonar.list
+RUN apt-get update
+RUN apt-get install -y --force-yes sonar
+RUN rm -rf /opt/sonar/conf/sonar.properties
+ADD sonarqube/sonar.properties /opt/sonar/conf/sonar.properties
+
 # Setup Supervisor
 RUN apt-get install -y supervisor
 RUN mkdir -p /var/log/supervisor
@@ -36,3 +43,4 @@ ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 CMD ["/usr/bin/supervisord"]
 
 EXPOSE 80
+EXPOSE 9000
