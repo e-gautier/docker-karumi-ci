@@ -25,6 +25,6 @@ RUN apt-get install -y supervisor
 RUN mkdir -p /var/log/supervisor
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-CMD ["/jenkins.sh"]
+CMD ["/usr/bin/supervisord"]
 
 EXPOSE 8080
