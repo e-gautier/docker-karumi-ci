@@ -20,6 +20,14 @@ RUN sed -r -i 's/^(JENKINS_ARGS=".*)"/\1 --prefix=$PREFIX"/' /etc/default/jenkin
 ADD jenkins.sh /jenkins.sh
 RUN chmod +x /jenkins.sh
 
+# Setup NGINX Reverse Proxy
+RUN apt-get install -y nginx
+RUN rm /etc/nginx/sites-enabled/default
+ADD nginx/reverse-proxy /etc/nginx/sites-available/reverse-proxy
+RUN ln -s /etc/nginx/sites-available/reverse-proxy /etc/nginx/sites-enabled/reverse-proxy
+# Append "daemon off;" to the beginning of the configuration
+RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+
 # Setup Supervisor
 RUN apt-get install -y supervisor
 RUN mkdir -p /var/log/supervisor
@@ -27,4 +35,4 @@ ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 CMD ["/usr/bin/supervisord"]
 
-EXPOSE 8080
+EXPOSE 80
