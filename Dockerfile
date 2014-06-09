@@ -19,6 +19,9 @@ RUN sed -r -i 's/^(JENKINS_ARGS=".*)"/\1 --prefix=$PREFIX"/' /etc/default/jenkin
 ADD jenkins.sh /jenkins.sh
 RUN chmod +x /jenkins.sh
 
+# install git
+RUN apt-get -y install git
+
 #Sonar
 RUN echo "deb http://downloads.sourceforge.net/project/sonar-pkg/deb binary/" > /etc/apt/sources.list.d/sonar.list
 RUN apt-get update
