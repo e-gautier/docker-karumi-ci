@@ -6,6 +6,7 @@
 FROM ubuntu
 
 # install prerequisites for jenkins
+RUN apt-get update
 RUN apt-get -y install wget
 
 # add jenkins to the repository
@@ -18,6 +19,13 @@ RUN apt-get -y install jenkins
 RUN sed -r -i 's/^(JENKINS_ARGS=".*)"/\1 --prefix=$PREFIX"/' /etc/default/jenkins
 ADD jenkins.sh /jenkins.sh
 RUN chmod +x /jenkins.sh
+
+# Jenkins plugins
+RUN mkdir -p /var/lib/jenkins/plugins
+ADD jenkins/plugins/bitbucket.hpi /var/lib/jenkins/plugins/
+ADD jenkins/plugins/git.hpi /var/lib/jenkins/plugins/
+ADD jenkins/plugins/github.hpi /var/lib/jenkins/plugins/
+ADD jenkins/plugins/sonar.hpi /var/lib/jenkins/plugins/
 
 # install git
 RUN apt-get -y install git
